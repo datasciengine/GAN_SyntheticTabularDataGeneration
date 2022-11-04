@@ -5,29 +5,33 @@ from tensorflow import keras
 class Generator(keras.Model):
     def __init__(self):
         super(Generator, self).__init__()
-        self.dense_1 = keras.layers.Dense(128, input_dim=100, name="Dense")
+        self.dense = keras.layers.Dense(7*7*256, use_bias=False, input_shape=(100,), name="Dense")
         self.bn0 = keras.layers.BatchNormalization(name="BatchNorm0")
 
-        self.dense_2 = keras.layers.Dense(256, name="Dense2")
+        self.rshpe_lyr = keras.layers.Reshape((7, 7, 256), name="Reshape1")
+
+        self.conv2dt1 = keras.layers.Conv2DTranspose(128, (5, 5), strides=(1, 1), padding="same", use_bias=False, name="Con2DTranspose1")
         self.bn1 = keras.layers.BatchNormalization(name="BatchNorm1")
 
-        self.dense_3 = keras.layers.Dense(512, name="Dense3")
+        self.conv2dt2 = keras.layers.Conv2DTranspose(64, (5, 5), strides=(2, 2), padding="same", use_bias=False, name="Con2DTranspose2")
         self.bn2 = keras.layers.BatchNormalization(name="BatchNorm2")
 
-        self.dense_out = keras.layers.Dense(14, activation="tanh")
+        self.conv2dt3 = keras.layers.Conv2DTranspose(1, (5, 5), strides=(2, 2), padding="same", use_bias=False, activation="tanh", name="Con2DTranspose3")
 
 
     def call(self, x):
-        x = self.dense_1(x)
+        x = self.dense(x)
         x = tf.nn.leaky_relu(self.bn0(x))
-    
-        x = self.dense_2(x)
+        
+        x = self.rshpe_lyr(x)
+
+        x = self.conv2dt1(x)
         x = tf.nn.leaky_relu(self.bn1(x))
         
-        x = self.dense_3(x)
+        x = self.conv2dt2(x)
         x = tf.nn.leaky_relu(self.bn2(x))
         
-        x = self.dense_out(x)
+        x = self.conv2dt3(x)
         
         return x
 

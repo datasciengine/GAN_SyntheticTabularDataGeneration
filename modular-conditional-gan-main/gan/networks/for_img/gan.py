@@ -18,15 +18,12 @@ class GAN(keras.Model):
     
     @tf.function
     def train_step(self, data):
-        real_data = data
-        #print("data:", data)
-        batch_size = tf.shape(real_data)[0]
-        #print("batch_size:", batch_size)
+        real_images = data
+        batch_size = tf.shape(real_images)[0]
         random_latent_vectors = tf.random.normal(shape=(batch_size, self.latent_dim))
-        #print("random_latent_vectors:", random_latent_vectors)
-
-        generated_data = self.generator(random_latent_vectors)
-        combined_data = tf.concat([generated_data, real_data], axis=0)
+        
+        generated_images = self.generator(random_latent_vectors)
+        combined_images = tf.concat([generated_images, real_images], axis=0)
         
         labels = tf.concat([tf.ones((batch_size, 1)),
                             tf.zeros((batch_size, 1))], axis=0)
@@ -34,7 +31,7 @@ class GAN(keras.Model):
         labels += 0.05 * tf.random.uniform(tf.shape(labels))
         
         with tf.GradientTape() as tape:
-            predictions = self.discriminator(combined_data, training=True)
+            predictions = self.discriminator(combined_images, training=True)
             d_loss = self.loss_fn(labels, predictions)
             
         grads = tape.gradient(d_loss, self.discriminator.trainable_weights)
