@@ -3,7 +3,9 @@ from tensorflow import keras
 
 
 class Generator(keras.Model):
-    def __init__(self):
+    def __init__(self, out_shape):
+
+        self.out_shape = out_shape
         super(Generator, self).__init__()
         self.dense_1 = keras.layers.Dense(128, input_dim=100, name="Dense")
         self.bn0 = keras.layers.BatchNormalization(name="BatchNorm0")
@@ -14,7 +16,7 @@ class Generator(keras.Model):
         self.dense_3 = keras.layers.Dense(512, name="Dense3")
         self.bn2 = keras.layers.BatchNormalization(name="BatchNorm2")
 
-        self.dense_out = keras.layers.Dense(14, activation="tanh")
+        self.dense_out = keras.layers.Dense(self.out_shape, activation="tanh")
 
 
     def call(self, x):

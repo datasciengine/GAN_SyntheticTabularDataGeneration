@@ -19,11 +19,8 @@ class GAN(keras.Model):
     @tf.function
     def train_step(self, data):
         real_data = data
-        #print("data:", data)
         batch_size = tf.shape(real_data)[0]
-        #print("batch_size:", batch_size)
         random_latent_vectors = tf.random.normal(shape=(batch_size, self.latent_dim))
-        #print("random_latent_vectors:", random_latent_vectors)
 
         generated_data = self.generator(random_latent_vectors)
         combined_data = tf.concat([generated_data, real_data], axis=0)

@@ -3,14 +3,13 @@ from tensorflow import keras
 
 
 class Discriminator(keras.Model):
-    def __init__(self):
+    def __init__(self, out_shape):
         super(Discriminator, self).__init__()
 
-        self.dense_1 = keras.layers.Dense(512, input_shape=(14, 1))
+        self.out_shape = out_shape
+        self.dense_1 = keras.layers.Dense(512, input_shape=(self.out_shape, 1))
 
         self.dense_2 = keras.layers.Dense(256)
-
-        # self.dense_3 = keras.layers.Dense(128)
 
         self.dense_out = keras.layers.Dense(1, activation='sigmoid')
 
