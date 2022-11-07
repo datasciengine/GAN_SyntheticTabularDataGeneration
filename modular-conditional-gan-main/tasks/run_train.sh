@@ -1,1 +1,0 @@
-python -m gan.main --mode=train --save '{"batch_size": 32, "epochs": 2, "dataset": "mnist", "latent_dim": 100, "buffer_size": 60000}'
