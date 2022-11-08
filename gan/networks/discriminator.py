@@ -7,9 +7,9 @@ class Discriminator(keras.Model):
         super(Discriminator, self).__init__()
 
         self.out_shape = out_shape
-        self.dense_1 = keras.layers.Dense(512, input_shape=(self.out_shape, 1))
+        self.dense_1 = keras.layers.Dense(256, input_shape=(self.out_shape, 1))
 
-        self.dense_2 = keras.layers.Dense(256)
+        self.dense_2 = keras.layers.Dense(128)
 
         self.dense_out = keras.layers.Dense(1, activation='sigmoid')
 

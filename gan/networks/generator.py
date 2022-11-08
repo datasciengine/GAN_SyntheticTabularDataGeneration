@@ -3,17 +3,18 @@ from tensorflow import keras
 
 
 class Generator(keras.Model):
-    def __init__(self, out_shape):
+    def __init__(self, out_shape, latent_dim):
 
         self.out_shape = out_shape
+        self.latent_dim = latent_dim
         super(Generator, self).__init__()
-        self.dense_1 = keras.layers.Dense(128, input_dim=100, name="Dense")
+        self.dense_1 = keras.layers.Dense(64, input_dim=latent_dim, name="Dense")
         self.bn0 = keras.layers.BatchNormalization(name="BatchNorm0")
 
-        self.dense_2 = keras.layers.Dense(256, name="Dense2")
+        self.dense_2 = keras.layers.Dense(128, name="Dense2")
         self.bn1 = keras.layers.BatchNormalization(name="BatchNorm1")
 
-        self.dense_3 = keras.layers.Dense(512, name="Dense3")
+        self.dense_3 = keras.layers.Dense(256, name="Dense3")
         self.bn2 = keras.layers.BatchNormalization(name="BatchNorm2")
 
         self.dense_out = keras.layers.Dense(self.out_shape, activation="tanh")
